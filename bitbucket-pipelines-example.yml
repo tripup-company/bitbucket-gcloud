@@ -1,0 +1,28 @@
+image: cyberaleks/bitbucket-gcloud
+options:
+  docker: true
+pipelines:
+  branches:
+    master:
+      - step:
+        name: Tests
+        caches:
+          - composer
+        script:
+          -   ..........
+  tags:
+    release-*:
+      - step:
+        name: Docker Build and Deploy to Production
+        deployment: production
+        caches:
+          - docker
+        script: 
+          - echo $GOOGLE_CLIENT_SECRET | base64 --decode --ignore-garbage >> client-secret.json
+          - export IMAGE_NAME=gcr.io/<YOU_PORJECT>/<YOU_APP>:$BITBUCKET_TAG
+          - docker build -t $IMAGE_NAME .
+          - gcloud auth activate-service-account --key-file client-secret.json
+          - gcloud config set project <YOU_PORJECT>
+          - gcloud container clusters get-credentials <YOU_CLUSTER> --zone <ZONE>
+          - gcloud docker -- push $IMAGE_NAME
+          - kubectl set image deployments/<YOU_APP> <YOU_APP>=$IMAGE_NAME
