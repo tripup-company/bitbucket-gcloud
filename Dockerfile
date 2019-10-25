@@ -1,6 +1,8 @@
 FROM php:7.1
 
-RUN apt-get update && apt-get install -y unzip && apt-get install -y php7.0-intl
+RUN apt-get update && apt-get install -y unzip && apt-get install -y libicu-dev \
+	&& docker-php-ext-configure intl \
+	&& docker-php-ext-install intl
 RUN curl -sL https://deb.nodesource.com/setup_9.x | bash -
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
