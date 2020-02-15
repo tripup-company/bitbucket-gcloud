@@ -15,7 +15,7 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
     
 RUN apt-get update && apt-get install -y \
     libfreetype6-dev libjpeg62-turbo-dev libpng-dev libicu-dev zlib1g-dev libzip-dev \
-    google-cloud-sdk kubectl build-essential ruby unzip
+    google-cloud-sdk kubectl build-essential ruby unzip git
 
 RUN docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
