@@ -14,7 +14,7 @@ RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
     apt-get update -y && apt-get install google-cloud-sdk -y
     
 RUN apt-get update && apt-get install -y \
-    libfreetype6-dev libjpeg62-turbo-dev libpng-dev libicu-dev zlib1g-dev libzip-dev \
+    libfreetype6-dev libjpeg62-turbo-dev libpng-dev libicu-dev zlib1g-dev libzip-dev openssl libssl-dev libcurl4-openssl-dev \
     google-cloud-sdk kubectl build-essential ruby unzip git
 
 RUN docker-php-ext-install -j$(nproc) iconv \
@@ -23,3 +23,6 @@ RUN docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure intl \
     && docker-php-ext-install intl \
     && docker-php-ext-install zip
+
+RUN pecl install mongo
+RUN echo "extension=mongo.so" > /usr/local/etc/php/conf.d/mongo.ini
