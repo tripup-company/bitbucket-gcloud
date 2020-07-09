@@ -24,5 +24,6 @@ RUN docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-install intl \
     && docker-php-ext-install zip
 
-RUN pecl install mongo
-RUN echo "extension=mongo.so" > /usr/local/etc/php/conf.d/mongo.ini
+# Install mongo
+RUN pecl install mongodb \
+&& echo "extension=mongodb.so" > /usr/local/etc/php/conf.d/ext-mongodb.ini
