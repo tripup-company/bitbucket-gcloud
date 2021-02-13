@@ -6,6 +6,8 @@ RUN php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024
 RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 RUN php -r "unlink('composer-setup.php');"
 
+RUN apt-get update && apt-get install -y gnupg2 lsb-release
+
 # add gcloud-sdk, nodejs, yarn system packages 
 RUN export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
     echo "deb http://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
@@ -18,7 +20,7 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources
 RUN apt-get update && apt-get install -y nodejs yarn locales locales-all \
     libfreetype6-dev libjpeg62-turbo-dev libpng-dev libicu-dev \
     zlib1g-dev libzip-dev openssl libssl-dev libcurl4-openssl-dev \
-    google-cloud-sdk kubectl build-essential ruby unzip git
+    gnupg2 google-cloud-sdk kubectl build-essential ruby unzip git
 
 # install yarn packages
 RUN yarn global add node-gyp sass grunt grunt-cli
